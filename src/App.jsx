@@ -1,8 +1,8 @@
 import MailBox from './components/MailBox/MailBox';
 
-import meestExpressUsers from './meestExspess.json'
-import novaPoshtaUsers from './novaPoshta.json'
-import ukrPoshtaUsers from './ukrPoshta.json'
+import meestExpressUsers from './meestExspess.json';
+import novaPoshtaUsers from './novaPoshta.json';
+import ukrPoshtaUsers from './ukrPoshta.json';
 
 // const meestExpressUsers = [
 //   { id: "1", userEmail: "user@example.com" },
@@ -23,6 +23,7 @@ import ukrPoshtaUsers from './ukrPoshta.json'
 function App() {
   return (
     <div>
+      <button>Click me</button>
       <MailBox
         users={meestExpressUsers}
         boxTitle="Meest Express"
@@ -33,10 +34,7 @@ function App() {
         boxTitle="Nova Poshta"
         mailBoxCount={5}
       />
-      <MailBox
-        users={ukrPoshtaUsers}
-        boxTitle="UKR Poshta"
-      />
+      <MailBox users={ukrPoshtaUsers} boxTitle="UKR Poshta" />
     </div>
   );
 }
