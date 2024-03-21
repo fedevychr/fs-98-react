@@ -6,18 +6,18 @@ import MailBoxList from '../MailBoxList/MailBoxList';
 const MailBox = ({ users, boxTitle, mailBoxCount = 0 }) => {
   const isMailBoxIsFull = mailBoxCount === 0;
 
-
-
   return (
-    <div className={clsx(css.mailbox, {
-      [css.full]: isMailBoxIsFull,
+    <div
+      className={clsx(css.mailbox, {
+        [css.full]: isMailBoxIsFull,
       })}
     >
       <h2 className={css.mailboxTitle}>{boxTitle}</h2>
       {isMailBoxIsFull ? (
         <p>
           <b>
-            Приносимо вибачення за незручності. Наразі немає доступних скриньок для замовлення.
+            Приносимо вибачення за незручності. Наразі немає доступних скриньок
+            для замовлення.
           </b>
         </p>
       ) : (
