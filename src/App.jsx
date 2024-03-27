@@ -1,76 +1,77 @@
-import { useEffect, useState } from 'react';
-import DrinksCounter from './components/DrinksCounter/DrinksCounter';
-import DrinksValues from './components/DrinksValues/DrinksValues';
-// import MailBox from './components/MailBox/MailBox';
+import { useState } from 'react';
+import { nanoid } from 'nanoid';
 
-// import meestExpressUsers from './meestExpress.json';
+import MailBox from './components/MailBox/MailBox';
+import MailBoxForm from './components/MailBoxForm/MailBoxForm';
+
+import meestExpressUsers from './meestExpress.json';
+import { useEffect } from 'react';
+
 // import novaPoshtaUsers from './novaPoshta.json';
 // import ukrPoshtaUsers from './ukrPoshta.json';
 
-const initialDrinks = { beer: 0, whisky: 0, wine: 0 };
-
 function App() {
-  // const [counter, setCounter] = useState(0);
-  const [drinks, setDrinks] = useState(() => {
-    const stringifiedDrinks = localStorage.getItem('drinksValues');
-    const parsedDrinks = JSON.parse(stringifiedDrinks) ?? initialDrinks;
-    return parsedDrinks;
+  const [users, setUsers] = useState(() => {
+    const stringifiedUsers = localStorage.getItem('users');
+    if (!stringifiedUsers) return meestExpressUsers;
+
+    const parsedUsers = JSON.parse(stringifiedUsers);
+    return parsedUsers;
   });
-  const [isVisibleBar, setIsVisibleBar] = useState(false);
 
-  const handleLogDrink = drinkName => {
-    // drinkName -> 'beer' | 'whisky' | 'wine'
-    if (drinks[drinkName] === 2 && drinkName === 'beer') {
-      alert(
-        'Sorry, you exceeded the beer limit. Please, choose another drink!',
-      );
-      return;
-    }
-    setDrinks({ ...drinks, [drinkName]: drinks[drinkName] + 1 });
-  };
-
-  const handleResetDrinks = () => {
-    setDrinks(initialDrinks);
-  };
-
-  const onToggleMiniBarVisibility = () => {
-    setIsVisibleBar(!isVisibleBar);
-  };
-
-  // const drinksTotal = drinks.beer + drinks.whisky + drinks.wine;
-  const drinksTotal = Object.values(drinks).reduce(
-    (acc, curr) => acc + curr,
-    0,
-  );
-
-  // useEffect(() => {
-  //   if (drinksTotal === 0) {
-  //     console.log('App was mounted');
-  //   } else {
-  //     console.log(`Total drinks values - ${drinksTotal} y.o`);
-  //   }
-  // }, [drinksTotal]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('drinksValues', JSON.stringify(drinks));
-  }, [drinks]);
+    localStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
+
+  const onAddUser = formData => {
+    // formData -> { "userEmail": "user@example.com" }
+    // state -> { "id": "1", "userEmail": "user@example.com" }
+    const finalUser = {
+      ...formData,
+      id: nanoid(),
+    };
+
+    // setUsers([...users, finalUser]);
+    setUsers(prevState => [...prevState, finalUser]);
+  };
+
+  const onDeleteUser = userId => {
+    // userId -> 2
+    // [{id: 1}, {id: 2}, {id: 3]
+    // [{id: 1}, {id: 3}]
+    setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+  };
+
+  const onChangeFilter = event => {
+    setFilter(event.target.value);
+  };
+
+  const filteredUsers = users.filter(
+    user =>
+      user.userName.toLowerCase().includes(filter.toLowerCase()) ||
+      user.userEmail.toLowerCase().includes(filter.toLowerCase()),
+  );
 
   return (
     <div>
-      <button onClick={onToggleMiniBarVisibility}>
-        {isVisibleBar ? 'Hide' : 'Show'} mini-bar
-      </button>
-      {isVisibleBar && (
-        <>
-          <DrinksValues drinks={drinks} total={drinksTotal} />
-          <DrinksCounter
-            total={drinksTotal}
-            handleResetDrinks={handleResetDrinks}
-            onToggleMiniBarVisibility={onToggleMiniBarVisibility}
-            handleLogDrink={handleLogDrink}
-          />
-        </>
-      )}
+      <MailBoxForm onAddUser={onAddUser} />
+
+      <section>
+        <h2>Search users by email or username</h2>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={filter}
+          onChange={onChangeFilter}
+        />
+      </section>
+      <MailBox
+        users={filteredUsers}
+        onDeleteUser={onDeleteUser}
+        boxTitle="Meest Express"
+      />
     </div>
   );
 }
