@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import MailBox from './components/MailBox/MailBox';
 import MailBoxForm from './components/MailBoxForm/MailBoxForm';
 
 import meestExpressUsers from './meestExpress.json';
-import { useEffect } from 'react';
-
 // import novaPoshtaUsers from './novaPoshta.json';
 // import ukrPoshtaUsers from './ukrPoshta.json';
 
