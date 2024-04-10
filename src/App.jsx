@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import MailBox from './components/MailBox/MailBox';
@@ -18,6 +18,7 @@ function App() {
   });
 
   const [filter, setFilter] = useState('');
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(users));
@@ -46,15 +47,28 @@ function App() {
     setFilter(event.target.value);
   };
 
-  const filteredUsers = users.filter(
-    user =>
-      user.userName.toLowerCase().includes(filter.toLowerCase()) ||
-      user.userEmail.toLowerCase().includes(filter.toLowerCase()),
+  const filteredUsers = useMemo(
+    () =>
+      users.filter(user => {
+        // for (let i = 0; i < 1_000_000_000; i++) {}
+
+        return (
+          user.userName.toLowerCase().includes(filter.toLowerCase()) ||
+          user.userEmail.toLowerCase().includes(filter.toLowerCase())
+        );
+      }),
+    [filter, users],
   );
 
   return (
     <div>
       <MailBoxForm onAddUser={onAddUser} />
+      <section>
+        <h2>Counter: {counter}</h2>
+        <button onClick={() => setCounter(counter + 1)}>
+          Click to increment counter
+        </button>
+      </section>
 
       <section>
         <h2>Search users by email or username</h2>

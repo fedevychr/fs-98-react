@@ -1,59 +1,17 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { requestProducts, requestProductsByQuery } from './services/api';
 import Loader from './components/Loader/Loader';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import ProductsList from './components/ProductList/ProductList';
 import SearchForm from './components/SearchForm/SearchForm';
+import { useProductSearch } from './hooks/useProductSearch';
+import RefExample from './components/RefExample/RefExample';
 
 const AppWithHTTPRequests = () => {
-  const [products, setProducts] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [query, setQuery] = useState('');
-  console.log('query: ', query);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setIsLoading(true);
-        const data = await requestProducts();
-        setProducts(data.products);
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    if (query.length === 0) return;
-
-    async function fetchProductsByQuery() {
-      try {
-        setIsLoading(true);
-        const data = await requestProductsByQuery(query);
-        setProducts(data.products);
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchProductsByQuery();
-  }, [query]);
-
-  const onSetSearchQuery = searchTerm => {
-    setQuery(searchTerm);
-  };
+  const { products, isLoading, isError, onSetSearchQuery } = useProductSearch();
 
   return (
     <div>
       <h1>Smart Ukrainian Big Product Store</h1>
+      <RefExample />
       <SearchForm onSetSearchQuery={onSetSearchQuery} />
 
       {isLoading && <Loader />}
