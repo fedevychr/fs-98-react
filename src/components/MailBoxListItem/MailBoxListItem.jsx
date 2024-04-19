@@ -8,7 +8,10 @@ const MailBoxListItem = ({ user, onDeleteUser }) => {
       </p>
       <p className={css.name}>
         Name:
-        <div style={{ backgroundColor: user.favColor }} className={css.color} />
+        <span
+          style={{ backgroundColor: user.favColor }}
+          className={css.color}
+        />
         <b>{user.userName}</b>
       </p>
       <button type="button" onClick={() => onDeleteUser(user.id)}>
