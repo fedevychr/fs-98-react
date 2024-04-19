@@ -3,7 +3,8 @@ import clsx from 'clsx';
 
 import HomePage from './pages/HomePage';
 import MailboxPage from './pages/MailboxPage';
-import ProductsPage from './pages/ProductsPage';
+import ProductsPage from './pages/ProductPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
 import SearchPage from './pages/SearchPage';
 import NotFound from './pages/NotFound';
 
@@ -52,6 +53,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/mailbox" element={<MailboxPage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route
+            path="/products/:productId/*"
+            element={<ProductDetailsPage />}
+          />
           <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

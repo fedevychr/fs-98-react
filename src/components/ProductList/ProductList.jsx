@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const ProductList = ({ products }) => {
   return (
     <ul>
@@ -19,6 +21,7 @@ const ProductList = ({ products }) => {
               <p>
                 Rating: <b>{product.rating}</b>
               </p>
+              <Link to={`/products/${product.id}`}>See the details</Link>
             </li>
           );
         })}
