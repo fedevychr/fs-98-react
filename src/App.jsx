@@ -1,14 +1,23 @@
+import { Suspense, lazy } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import clsx from 'clsx';
 
-import HomePage from './pages/HomePage';
-import MailboxPage from './pages/MailboxPage';
-import ProductsPage from './pages/ProductPage';
-import ProductDetailsPage from './pages/ProductDetailsPage';
-import SearchPage from './pages/SearchPage';
-import NotFound from './pages/NotFound';
+// import HomePage from './pages/HomePage';
+// import MailboxPage from './pages/MailboxPage';
+// import ProductsPage from './pages/ProductsPage';
+// import ProductDetailsPage from './pages/ProductDetailsPage';
+// import SearchPage from './pages/SearchPage';
+// import NotFound from './pages/NotFound';
+
+const HomePage = lazy(() => import('./pages/HomePage'));
+const MailboxPage = lazy(() => import('./pages/MailboxPage'));
+const ProductsPage = lazy(() => import('./pages/ProductsPage'));
+const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 import css from './App.module.css';
+import Loader from './components/Loader/Loader';
 
 /*
 Робота з маршрутизацією:
@@ -49,17 +58,19 @@ function App() {
       </header>
       {/* URL -> localhost:5123/search */}
       <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/mailbox" element={<MailboxPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route
-            path="/products/:productId/*"
-            element={<ProductDetailsPage />}
-          />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/mailbox" element={<MailboxPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route
+              path="/products/:productId/*"
+              element={<ProductDetailsPage />}
+            />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   );
