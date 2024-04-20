@@ -1,8 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const ProductList = ({ products }) => {
+  const location = useLocation();
+
   return (
     <ul>
+      {location.pathname === '/search' && <h2>Search results</h2>}
+      {location.pathname === '/products' && <h2>Products</h2>}
       {Array.isArray(products) &&
         products.map(product => {
           return (
@@ -21,7 +25,9 @@ const ProductList = ({ products }) => {
               <p>
                 Rating: <b>{product.rating}</b>
               </p>
-              <Link to={`/products/${product.id}`}>See the details</Link>
+              <Link state={location} to={`/products/${product.id}`}>
+                See the details
+              </Link>
             </li>
           );
         })}

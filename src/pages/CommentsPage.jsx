@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 
-const CommentPage = () => {
+const CommentsPage = () => {
   const { productId } = useParams();
   return <div>CommentPage: {productId} </div>;
 };
 
-export default CommentPage;
+export default CommentsPage;
