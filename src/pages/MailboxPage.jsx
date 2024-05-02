@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import MailBox from '../components/MailBox/MailBox';
 import MailBoxForm from '../components/MailBoxForm/MailBoxForm';
+import {
+  addUser,
+  deleteUser,
+  setFilter,
+} from '../redux/mailbox/mailboxReducer';
 
 // import meestExpressUsers from '../meestExpress.json';
 // import novaPoshtaUsers from '../novaPoshta.json';
@@ -47,42 +52,21 @@ function MailboxPage() {
   const filter = useSelector(state => state.mailbox.filter);
   const [counter, setCounter] = useState(0);
 
-  // useEffect(() => {
-  //   localStorage.setItem('users', JSON.stringify(users));
-  // }, [users]);
-
   const onAddUser = formData => {
-    // formData -> { "userEmail": "user@example.com" }
-    // state -> { "id": "1", "userEmail": "user@example.com" }
     const finalUser = {
       ...formData,
       id: nanoid(),
     };
 
-    const action = {
-      type: 'mailbox/ADD_USER',
-      payload: finalUser,
-    };
-
-    dispatch(action);
-
-    // setUsers([...users, finalUser]);
-    // setUsers(prevState => [...prevState, finalUser]);
+    dispatch(addUser(finalUser));
   };
 
   const onDeleteUser = userId => {
-    const action = { type: 'mailbox/DELETE_USER', payload: userId };
-
-    dispatch(action);
-
-    // setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+    dispatch(deleteUser(userId));
   };
 
   const onChangeFilter = event => {
-    const action = { type: 'mailbox/SET_FILTER', payload: event.target.value };
-
-    dispatch(action);
-    // setFilter(event.target.value);
+    dispatch(setFilter(event.target.value));
   };
 
   const filteredUsers = useMemo(
