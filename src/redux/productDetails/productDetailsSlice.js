@@ -5,7 +5,6 @@ export const apiRequestProductDetailsById = createAsyncThunk(
   'productDetails/get',
   async (productId, thunkApi) => {
     try {
-      throw new Error('some error 123');
       const data = await requestProductDetailsById(productId);
 
       return data; // Те, що повертається з санки потрапляє в action.payload
