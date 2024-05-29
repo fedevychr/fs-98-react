@@ -19,6 +19,7 @@ const ProductDetailsPage = () => {
   );
   const isLoading = useSelector(state => state.productDetails.isLoading);
   const isError = useSelector(state => state.productDetails.isError);
+  const error = useSelector(state => state.productDetails.error);
 
   useEffect(() => {
     dispatch(apiRequestProductDetailsById(productId));
@@ -29,7 +30,7 @@ const ProductDetailsPage = () => {
       <h1>Product details: {productId}</h1>
       <Link to={backLinkRef.current}>⬅ Go back</Link>
       {isLoading && <Loader />}
-      {isError && <ErrorMessage />}
+      {isError && <ErrorMessage message={error} />}
       {productDetails !== null && (
         <div>
           <img src={productDetails.thumbnail} alt={productDetails.title} />
