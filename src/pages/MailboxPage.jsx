@@ -1,14 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MailBox from '../components/MailBox/MailBox';
 import MailBoxForm from '../components/MailBoxForm/MailBoxForm';
-import {
-  addUser,
-  deleteUser,
-  setFilter,
-} from '../redux/mailbox/mailboxReducer';
+import { addUser, deleteUser } from '../redux/mailbox/mailboxReducer';
+import MailboxFilter from '../components/MailboxFilter/MailboxFilter';
+import { selectFilteredUsers } from '../redux/mailbox/selectors';
 
 // import meestExpressUsers from '../meestExpress.json';
 // import novaPoshtaUsers from '../novaPoshta.json';
@@ -38,19 +36,9 @@ reducer - це чиста функція, яка приймає state, action і
 */
 
 function MailboxPage() {
-  // const [users, setUsers] = useState(() => {
-  //   const stringifiedUsers = localStorage.getItem('users');
-  //   if (!stringifiedUsers) return meestExpressUsers;
-
-  //   const parsedUsers = JSON.parse(stringifiedUsers);
-  //   return parsedUsers;
-  // });
-
-  // const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
-  const users = useSelector(state => state.mailbox.users);
-  const filter = useSelector(state => state.mailbox.filter);
   const [counter, setCounter] = useState(0);
+  const filteredUsers = useSelector(selectFilteredUsers);
 
   const onAddUser = formData => {
     const finalUser = {
@@ -65,23 +53,6 @@ function MailboxPage() {
     dispatch(deleteUser(userId));
   };
 
-  const onChangeFilter = event => {
-    dispatch(setFilter(event.target.value));
-  };
-
-  const filteredUsers = useMemo(
-    () =>
-      users.filter(user => {
-        // for (let i = 0; i < 1_000_000_000; i++) {}
-
-        return (
-          user.userName.toLowerCase().includes(filter.toLowerCase()) ||
-          user.userEmail.toLowerCase().includes(filter.toLowerCase())
-        );
-      }),
-    [filter, users],
-  );
-
   return (
     <div>
       <MailBoxForm onAddUser={onAddUser} />
@@ -93,19 +64,16 @@ function MailboxPage() {
       </section>
 
       <section>
-        <h2>Search users by email or username</h2>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={filter}
-          onChange={onChangeFilter}
+        <MailboxFilter />
+      </section>
+
+      <section>
+        <MailBox
+          users={filteredUsers}
+          onDeleteUser={onDeleteUser}
+          boxTitle="Meest Express"
         />
       </section>
-      <MailBox
-        users={filteredUsers}
-        onDeleteUser={onDeleteUser}
-        boxTitle="Meest Express"
-      />
     </div>
   );
 }
