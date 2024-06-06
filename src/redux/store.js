@@ -14,19 +14,20 @@ import storage from 'redux-persist/lib/storage';
 import { mailboxReducer } from './mailbox/mailboxReducer';
 import { timerReducer } from './timer/timerSlice';
 import { productDetailsReducer } from './productDetails/productDetailsSlice';
+import { authReducer } from './auth/authSlice';
 
-const mailboxPersistConfig = {
-  key: 'mailbox',
+const authPersistConfig = {
+  key: 'auth',
   storage,
-  whitelist: ['users'],
-  // blacklist: ['filter'],
+  whitelist: ['token'],
 };
 
 export const store = configureStore({
   reducer: {
-    mailbox: persistReducer(mailboxPersistConfig, mailboxReducer),
+    mailbox: mailboxReducer,
     countDownTimer: timerReducer,
     productDetails: productDetailsReducer,
+    auth: persistReducer(authPersistConfig, authReducer),
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
