@@ -2,14 +2,21 @@ import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 
 import css from '../../App.module.css';
-import { useSelector } from 'react-redux';
-import { selectIsSignedIn } from '../../redux/auth/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsSignedIn, selectUserData } from '../../redux/auth/selectors';
+import { apiLogout } from '../../redux/auth/authSlice';
 
 const geNavLinkClassName = ({ isActive }) =>
   clsx(css.navLink, { [css.active]: isActive });
 
 const Layout = ({ children }) => {
+  const dispatch = useDispatch();
   const isSignedIn = useSelector(selectIsSignedIn);
+  const userData = useSelector(selectUserData);
+
+  const onLogout = () => {
+    dispatch(apiLogout());
+  };
 
   return (
     <div>
@@ -32,6 +39,12 @@ const Layout = ({ children }) => {
               <NavLink className={geNavLinkClassName} to="/search">
                 Search
               </NavLink>
+              <div>
+                <span>Hi, {userData.name}</span>
+                <button onClick={onLogout} type="button">
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <>
