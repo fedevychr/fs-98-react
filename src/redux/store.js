@@ -15,6 +15,7 @@ import { mailboxReducer } from './mailbox/mailboxReducer';
 import { timerReducer } from './timer/timerSlice';
 import { productDetailsReducer } from './productDetails/productDetailsSlice';
 import { authReducer } from './auth/authSlice';
+import { contactsReducer } from './contacts/contactsSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -28,6 +29,7 @@ export const store = configureStore({
     countDownTimer: timerReducer,
     productDetails: productDetailsReducer,
     auth: persistReducer(authPersistConfig, authReducer),
+    phonebook: contactsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
